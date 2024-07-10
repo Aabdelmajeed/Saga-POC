@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.common</groupId>
-	<artifactId>ReliSol</artifactId>
+	<artifactId>inventory</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ReliSol</name>
-	<description>ReliSol organization for providing reliable solution in software</description>
+	<name>Inventory</name>
+	<description>Inventory Service as part of SAGA pattern</description>
 	<url/>
 	<licenses>
 		<license/>
