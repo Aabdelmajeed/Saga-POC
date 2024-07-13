@@ -11,8 +11,8 @@
 	<groupId>com.common</groupId>
 	<artifactId>ReliSol</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ReliSol</name>
-	<description>ReliSol organization for providing reliable solution in software</description>
+	<name>Ordering</name>
+	<description>Ordering service as a part of POC</description>
 	<url/>
 	<licenses>
 		<license/>
