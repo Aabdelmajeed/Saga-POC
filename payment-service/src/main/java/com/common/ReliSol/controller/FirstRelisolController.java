@@ -2,7 +2,7 @@ package com.common.ReliSol.controller;
 
 import com.common.ReliSol.model.StudentDetails;
 import com.common.ReliSol.model.response.ApiResponseModel;
-import com.common.ReliSol.service.RelisolService;
+import com.common.ReliSol.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -19,7 +19,7 @@ import java.util.List;
 public class FirstRelisolController {
 
     @Autowired
-    RelisolService relisolService;
+    PaymentService relisolService;
     @GetMapping
     @Operation(summary = "Relisol1 dummy controller", description = "relisol1 dummy controller.")
     @ApiResponses(value = {
