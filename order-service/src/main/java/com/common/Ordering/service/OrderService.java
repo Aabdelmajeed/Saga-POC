@@ -1,44 +1,38 @@
 package com.common.Ordering.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.annotation.JmsListener;
-import org.springframework.jms.core.JmsTemplate;
+import com.common.Ordering.model.SagaOrderModel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class OrderService {
+    SagaOrderModel sagaOrder;
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
+    public void processOrder() {
+        reserveInventory();
+    }
 
-    @Autowired
-    private OrderProcessingSagaService orderProcessingSaga;
+    public void reserveInventory() {
+        // Send message to the Inventory Service to reserve the product
+        // Set inventoryReserved to true if the reservation succeeds
+    }
 
-    @JmsListener(destination = "saga.order", containerFactory = "jmsListenerContainerFactory")
-    public void processOrder(String message) {
-        // Handle messages from the services
-        if (message.equals("inventory.reserved")) {
-            orderProcessingSaga.setInventoryReserved(true);
-            orderProcessingSaga.chargePayment();
-        } else if (message.equals("payment.charged")) {
-            orderProcessingSaga.setPaymentSucceeded(true);
-            orderProcessingSaga.scheduleShipment();
-        } else if (message.equals("shipment.scheduled")) {
-            orderProcessingSaga.setShipmentScheduled(true);
-        }
+    public void chargePayment() {
+        // Send message to the Payment Service to charge the customer
+        // Set paymentSucceeded to true if the payment succeeds
+    }
 
-        // Handle failure scenarios
-        if (!orderProcessingSaga.getInventoryReserved()) {
-            orderProcessingSaga.cancelOrder();
-            jmsTemplate.convertAndSend("order.failed", "Inventory not reserved");
-        } else if (!orderProcessingSaga.getPaymentSucceeded()) {
-            orderProcessingSaga.cancelOrder();
-            jmsTemplate.convertAndSend("order.failed", "Payment not charged");
-        } else if (!orderProcessingSaga.getShipmentScheduled()) {
-            orderProcessingSaga.cancelOrder();
-            jmsTemplate.convertAndSend("order.failed", "Shipment not scheduled");
-        } else {
-            jmsTemplate.convertAndSend("order.completed", "Order processed successfully");
-        }
+    public void scheduleShipment() {
+        // Send message to the Shipping Service to schedule the shipment
+        // Set shipmentScheduled to true if the shipment is scheduled successfully
+    }
+
+    public void cancelOrder() {
+        // Roll back all previous transactions
     }
 }

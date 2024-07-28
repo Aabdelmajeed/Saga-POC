@@ -15,4 +15,27 @@ public class WebClientConfig {
                 .build();
 
     }
+
+    @Bean
+    public WebClient inventoryWebClient(WebClient.Builder builder) {
+        return builder
+                .baseUrl("http://localhost:8083")
+                .build();
+    }
+
+    @Bean
+    public WebClient paymentWebClient(WebClient.Builder builder) {
+        return builder
+                .baseUrl("http://localhost:9090")
+                .build();
+    }
+
+    @Bean
+    public WebClient shippingWebClient(WebClient.Builder builder) {
+        return builder
+                .baseUrl("http://localhost:8085")
+                .build();
+    }
+
+
 }
