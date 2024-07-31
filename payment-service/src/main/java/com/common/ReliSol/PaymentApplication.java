@@ -6,10 +6,10 @@ import org.springframework.jms.annotation.EnableJms;
 
 @SpringBootApplication
 @EnableJms
-public class ReliSolApplication {
+public class PaymentApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ReliSolApplication.class, args);
+		SpringApplication.run(PaymentApplication.class, args);
 	}
 
 }
