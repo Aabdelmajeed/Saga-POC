@@ -16,7 +16,7 @@ public class Product {
     @Column(name = "productId")
     private String productId;
 
-    @Column(name="price")
+    @Column(name = "price")
     private Double price;
 
     @Column(name = "count")

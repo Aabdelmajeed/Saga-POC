@@ -1,4 +1,4 @@
-package com.common.Ordering;
+package com.common.shipping;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

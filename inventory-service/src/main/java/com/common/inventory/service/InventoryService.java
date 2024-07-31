@@ -1,17 +1,12 @@
 package com.common.inventory.service;
 
-import com.common.inventory.clients.StudentDetailsWebClient;
 import com.common.inventory.entity.ProductEntity;
-import com.common.inventory.model.StudentDetails;
 import com.common.inventory.repository.ProductRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class InventoryService {
@@ -21,7 +16,7 @@ public class InventoryService {
     private JmsTemplate jmsTemplate;
 
     @Autowired
-    public InventoryService( ProductRepository productRepository, JmsTemplate jmsTemplate){
+    public InventoryService(ProductRepository productRepository, JmsTemplate jmsTemplate) {
         this.productRepository = productRepository;
         this.jmsTemplate = jmsTemplate;
     }
@@ -35,13 +30,13 @@ public class InventoryService {
 
 
     @Transactional
-    public boolean releaseProduct(String productId){
-        try{
-            ProductEntity product =  productRepository.findById(Long.valueOf(productId)).get();
+    public boolean releaseProduct(String productId) {
+        try {
+            ProductEntity product = productRepository.findById(Long.valueOf(productId)).get();
             product.setCount(product.getCount() - 1);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return false;
         }
-       return true;
+        return true;
     }
 }

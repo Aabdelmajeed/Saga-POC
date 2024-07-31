@@ -1,4 +1,4 @@
-package com.common.inventory.config;
+package com.common.shipping.config;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;

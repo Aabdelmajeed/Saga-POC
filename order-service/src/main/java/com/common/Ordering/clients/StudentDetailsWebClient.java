@@ -15,11 +15,11 @@ public class StudentDetailsWebClient {
     @Autowired
     WebClient webClient;
 
-    public Mono<List<SagaOrderModel>> getStudentDetailsUsingWebClient(){
-         return this.webClient.get()
-                 .uri("/students")
-                 .retrieve()
-                 .bodyToFlux(SagaOrderModel.class)
-                 .collectList();
+    public Mono<List<SagaOrderModel>> getStudentDetailsUsingWebClient() {
+        return this.webClient.get()
+                .uri("/students")
+                .retrieve()
+                .bodyToFlux(SagaOrderModel.class)
+                .collectList();
     }
 }

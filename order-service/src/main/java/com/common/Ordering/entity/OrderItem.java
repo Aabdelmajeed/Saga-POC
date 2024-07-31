@@ -1,8 +1,9 @@
 package com.common.Ordering.entity;
 
-import com.common.Ordering.entity.Order;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data

@@ -6,10 +6,10 @@ import org.springframework.jms.annotation.EnableJms;
 
 @SpringBootApplication
 @EnableJms
-public class  InventoryApplication {
+public class InventoryApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(InventoryApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(InventoryApplication.class, args);
+    }
 
 }

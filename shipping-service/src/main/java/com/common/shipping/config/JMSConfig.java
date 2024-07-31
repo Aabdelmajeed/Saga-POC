@@ -1,4 +1,4 @@
-package com.common.inventory.config;
+package com.common.shipping.config;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,7 +8,6 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
 
-//TODO jms
 @Configuration
 @EnableJms
 public class JMSConfig {

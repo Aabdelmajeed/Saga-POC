@@ -19,4 +19,4 @@ public class SagaOrderModel {
     private Boolean paymentSucceeded = false;
     private Boolean shipmentScheduled = false;
     private Boolean inventoryReserved = false;
- }
+}

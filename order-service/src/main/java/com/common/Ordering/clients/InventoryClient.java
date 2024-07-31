@@ -8,17 +8,17 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Repository
 public class InventoryClient {
 
-     private final WebClient inventoryWebClient;
-     private final SagaOrderModel orderModel;
+    private final WebClient inventoryWebClient;
+    private final SagaOrderModel orderModel;
 
-     @Autowired
-    public InventoryClient(SagaOrderModel orderModel, WebClient inventoryWebClient){
+    @Autowired
+    public InventoryClient(SagaOrderModel orderModel, WebClient inventoryWebClient) {
         this.orderModel = orderModel;
         this.inventoryWebClient = inventoryWebClient;
     }
 
-    public void reserveOrder(){
-         String orderId = orderModel.getOrderId();
+    public void reserveOrder() {
+        String orderId = orderModel.getOrderId();
         inventoryWebClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/reserve/{orderId}")
                         .build(orderId))
@@ -27,7 +27,7 @@ public class InventoryClient {
                 .block();
     }
 
-    public void unReserverOrder(){
+    public void unReserverOrder() {
         String orderId = orderModel.getOrderId();
 
         inventoryWebClient.get()
