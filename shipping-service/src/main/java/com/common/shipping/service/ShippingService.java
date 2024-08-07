@@ -1,5 +1,7 @@
 package com.common.shipping.service;
 
+import com.common.shipping.enums.OrderStatus;
+import com.common.shipping.model.OrderCreateEvent;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
@@ -13,10 +15,20 @@ public class ShippingService {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    @JmsListener(destination = "shipping.schedule", containerFactory = "jmsListenerContainerFactory")
-    public void scheduleShipment(String message) {
-        // Schedule the shipment of the product
-        // Send a message back to the saga to indicate success or failure
-        jmsTemplate.convertAndSend("saga.order", "shipment.scheduled");
+
+    @JmsListener(destination = "saga.schedule", containerFactory = "jmsListenerContainerFactory")
+    public void shipOrder(OrderCreateEvent orderCreateEvent) {
+        // do all logic to schedule the order id defined in orderCreateEvent.orderId and change the status
+        // by default we set it true considering the shippment successed.
+        boolean orderStatus = true;
+        if(orderStatus){
+            orderCreateEvent.setOrderStatus(OrderStatus.COMPLETED);
+            jmsTemplate.convertAndSend("saga.order", orderCreateEvent);
+
+        }else{
+            jmsTemplate.convertAndSend("saga.failed", orderCreateEvent);
+
+        }
     }
+
 }

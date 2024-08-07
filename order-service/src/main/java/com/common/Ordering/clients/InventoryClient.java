@@ -1,6 +1,5 @@
 package com.common.Ordering.clients;
 
-import com.common.Ordering.model.SagaOrderModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -9,26 +8,15 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class InventoryClient {
 
     private final WebClient inventoryWebClient;
-    private final SagaOrderModel orderModel;
 
     @Autowired
-    public InventoryClient(SagaOrderModel orderModel, WebClient inventoryWebClient) {
-        this.orderModel = orderModel;
-        this.inventoryWebClient = inventoryWebClient;
+    public InventoryClient(WebClient inventoryWebClient) {
+         this.inventoryWebClient = inventoryWebClient;
     }
 
-    public void reserveOrder() {
-        String orderId = orderModel.getOrderId();
-        inventoryWebClient.get()
-                .uri(uriBuilder -> uriBuilder.path("/reserve/{orderId}")
-                        .build(orderId))
-                .retrieve()
-                .bodyToMono(Void.class)
-                .block();
-    }
 
-    public void unReserverOrder() {
-        String orderId = orderModel.getOrderId();
+
+    public void unReserverOrder(String orderId) {
 
         inventoryWebClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/unreserve/{orderId}")

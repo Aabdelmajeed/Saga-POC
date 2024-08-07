@@ -1,9 +1,10 @@
 package com.common.Ordering.enums;
 
 public enum OrderStatus {
+    INITIATED,
     RESERVED,
-    PAID,
+    CHARGED,
     SHIPPED,
-    CREATED,
+ COMPLETED,
    FAILED ,
 }

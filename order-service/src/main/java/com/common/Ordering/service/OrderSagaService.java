@@ -1,5 +1,8 @@
 package com.common.Ordering.service;
 
+import com.common.Ordering.entity.Order;
+import com.common.Ordering.enums.OrderStatus;
+import com.common.Ordering.model.OrderCreateEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
@@ -15,30 +18,26 @@ public class OrderSagaService {
     private OrderService orderProcessingSaga;
 
     @JmsListener(destination = "saga.order", containerFactory = "jmsListenerContainerFactory")
-    public void processOrder(String message) {
-        // Handle messages from the services
-        if (message.equals("inventory.reserved")) {
-            orderProcessingSaga.getSagaOrder().setInventoryReserved(true);
-            orderProcessingSaga.chargePayment();
-        } else if (message.equals("payment.charged")) {
-            orderProcessingSaga.getSagaOrder().setPaymentSucceeded(true);
-            orderProcessingSaga.scheduleShipment();
-        } else if (message.equals("shipment.scheduled")) {
-            orderProcessingSaga.getSagaOrder().setShipmentScheduled(true);
+    public void processOrder(OrderCreateEvent orderCreateEvent) {
+        OrderStatus status = orderCreateEvent.getOrderStatus();
+        if(status.equals(OrderStatus.INITIATED)){
+            jmsTemplate.convertAndSend("saga.reserve", orderCreateEvent);
+        }else if(status.equals(OrderStatus.RESERVED)){
+            jmsTemplate.convertAndSend("saga.charge", orderCreateEvent);
+        }else if(status.equals(OrderStatus.CHARGED)){
+            jmsTemplate.convertAndSend("saga.schedule", orderCreateEvent);
+        }else if(status.equals(OrderStatus.SHIPPED)){
+            jmsTemplate.convertAndSend("saga.completed", orderCreateEvent);
         }
+    }
 
-        // Handle failure scenarios
-        if (!orderProcessingSaga.getSagaOrder().getInventoryReserved()) {
-            orderProcessingSaga.cancelOrder();
-            jmsTemplate.convertAndSend("order.failed", "Inventory not reserved");
-        } else if (!orderProcessingSaga.getSagaOrder().getPaymentSucceeded()) {
-            orderProcessingSaga.cancelOrder();
-            jmsTemplate.convertAndSend("order.failed", "Payment not charged");
-        } else if (!orderProcessingSaga.getSagaOrder().getShipmentScheduled()) {
-            orderProcessingSaga.cancelOrder();
-            jmsTemplate.convertAndSend("order.failed", "Shipment not scheduled");
-        } else {
-            jmsTemplate.convertAndSend("order.completed", "Order processed successfully");
-        }
+    @JmsListener(destination = "saga.failed", containerFactory = "jmsListenerContainerFactory")
+    public void rollbackOrder(OrderCreateEvent orderCreateEvent){
+
+    }
+
+    @JmsListener(destination = "saga.completed", containerFactory = "jmsListenerContainerFactory")
+    public void orderCompleted(OrderCreateEvent orderCreateEvent){
+      // we can here set flag in DB to mark that the order is already done..
     }
 }

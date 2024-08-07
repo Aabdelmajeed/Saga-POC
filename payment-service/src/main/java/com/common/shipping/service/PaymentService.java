@@ -1,5 +1,7 @@
 package com.common.shipping.service;
 
+import com.common.shipping.enums.OrderStatus;
+import com.common.shipping.model.OrderCreateEvent;
 import lombok.AllArgsConstructor;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
@@ -11,11 +13,17 @@ public class PaymentService {
 
     private JmsTemplate jmsTemplate;
 
-    @JmsListener(destination = "payment.charge", containerFactory = "jmsListenerContainerFactory")
-    public void chargePayment(String message) {
-        // Charge the customer's payment method
-        // Send a message back to the saga to indicate success or failure
-        jmsTemplate.convertAndSend("saga.order", "payment.charged");
+
+    @JmsListener(destination = "saga.charge", containerFactory = "jmsListenerContainerFactory")
+    public void chargeOrder(OrderCreateEvent orderCreateEvent){
+        // considering the charge is successed
+        boolean chargeStatus = true;
+        if(chargeStatus){
+            orderCreateEvent.setOrderStatus(OrderStatus.CHARGED);
+            jmsTemplate.convertAndSend("saga.order", orderCreateEvent);
+        }else{
+            jmsTemplate.convertAndSend("saga.failed", orderCreateEvent);
+        }
     }
 
 

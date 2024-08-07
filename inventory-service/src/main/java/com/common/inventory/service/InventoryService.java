@@ -21,7 +21,7 @@ public class InventoryService {
         this.jmsTemplate = jmsTemplate;
     }
 
-    @JmsListener(destination = "inventory.reserve", containerFactory = "jmsListenerContainerFactory")
+    @JmsListener(destination = "saga.reserve", containerFactory = "jmsListenerContainerFactory")
     public void reserveInventory(String message) {
         // Reserve the inventory for the product
         // Send a message back to the saga to indicate success or failure
